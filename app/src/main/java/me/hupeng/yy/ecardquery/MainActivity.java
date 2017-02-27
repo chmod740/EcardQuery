@@ -22,32 +22,32 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        EcardQuery ecardQuery = new EcardQuery();
-
-        ecardQuery.queryAccountBiils("0141120997", "314132", new AccountBillListener() {
-            @Override
-            public void done(List<EcardQuery.AccountBill> accountBills, Exception e) {
-                if (e == null){
-                    Message message = new Message();
-                    message.what = 1;
-                    message.obj = accountBills;
-                    mHandler.sendMessage(message);
-                }
-            }
-        });
+//        EcardQuery ecardQuery = new EcardQuery();
+//
+//        ecardQuery.queryAccountBiils("0141120997", "314132", new AccountBillListener() {
+//            @Override
+//            public void done(List<EcardQuery.AccountBill> accountBills, Exception e) {
+//                if (e == null){
+//                    Message message = new Message();
+//                    message.what = 1;
+//                    message.obj = accountBills;
+//                    mHandler.sendMessage(message);
+//                }
+//            }
+//        });
     }
 
-    @SuppressLint("HandlerLeak")
-    private Handler mHandler=new Handler(){
-        @Override
-        public void handleMessage(Message msg){
-            if(msg.what==1){
-                List<EcardQuery.AccountBill> list= (List<EcardQuery.AccountBill>)msg.obj;
-                for(int i = 0 ; i < list.size() ; i ++){
-                    Toast.makeText(MainActivity.this, list.get(0).toString(),Toast.LENGTH_SHORT).show();
-                }
-            }
-        }
-    };
+//    @SuppressLint("HandlerLeak")
+//    private Handler mHandler=new Handler(){
+//        @Override
+//        public void handleMessage(Message msg){
+//            if(msg.what==1){
+//                List<EcardQuery.AccountBill> list= (List<EcardQuery.AccountBill>)msg.obj;
+//                for(int i = 0 ; i < list.size() ; i ++){
+//                    Toast.makeText(MainActivity.this, list.get(0).toString(),Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        }
+//    };
 
 }
