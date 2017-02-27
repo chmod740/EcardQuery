@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         EcardQuery ecardQuery = new EcardQuery();
+//        ecardQuery.login("0141122299", "030023");
         ecardQuery.login("0141120997", "314132");
     }
 }
