@@ -20,13 +20,20 @@ import java.util.regex.Pattern;
  * Created by HUPENG on 2017/2/25.
  */
 public class EcardQuery {
-
+    /**
+     * 账户流水集合
+     * */
     private List<AccountBill>accountBills = null;
+
+    /**
+     * 查询回调接口
+     * */
+    private AccountBillListener accountBillListener;
 
     /**
      * OkHttp库，主要用来执行网络请求
      * */
-    public OkHttpClient client = new OkHttpClient.Builder()
+    private OkHttpClient client = new OkHttpClient.Builder()
             .cookieJar(new CookieJar() {
                 private final HashMap<String, List<Cookie>> cookieStore = new HashMap<String, List<Cookie>>();
 
@@ -48,7 +55,7 @@ public class EcardQuery {
      * @param username      登录名
      * @param password      密码
      * */
-    public void login(String username, String password){
+    private void login(String username, String password){
         RequestBody formBody = new FormBody.Builder()
                 .add("name", username)
                 .add("passwd", password)
@@ -66,7 +73,8 @@ public class EcardQuery {
         call.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                Log.i(EcardQuery.class.toString(),"http request fail");
+//                Log.i(EcardQuery.class.toString(),"http request fail");
+                accountBillListener.done(null,e);
             }
 
 
@@ -98,7 +106,7 @@ public class EcardQuery {
         mCall.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                Log.e(EcardQuery.class.toString(),e.getLocalizedMessage());
+                accountBillListener.done(null,e);
             }
 
             @Override
@@ -115,7 +123,7 @@ public class EcardQuery {
     /**
      * 得到字符串中的数字
      * */
-    public String getNumbers(String content) {
+    private String getNumbers(String content) {
         Pattern pattern = Pattern.compile("\\d+");
         Matcher matcher = pattern.matcher(content);
         while (matcher.find()) {
@@ -128,7 +136,7 @@ public class EcardQuery {
     /**
      * 得到当天的消费记录
      * */
-    public void getLog(String account ) {
+    private void getLog(String account ) {
 
         /**
          * 构造一个表单对象
@@ -153,7 +161,7 @@ public class EcardQuery {
         mCall.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-
+                accountBillListener.done(null,e);
             }
 
             @Override
@@ -181,8 +189,10 @@ public class EcardQuery {
                         accountBills = new LinkedList<>();
                     }
                     accountBills.add(accountBill);
-                    System.out.println("*****************************************");
+//                    System.out.println("*****************************************");
+
                 }
+                accountBillListener.done(accountBills,null);
             }
         });
     }
@@ -221,5 +231,10 @@ public class EcardQuery {
          * */
         public String balance;
 
+    }
+
+    public void getAccountBiils(String username,String password, AccountBillListener accountBillListener){
+        this.accountBillListener = accountBillListener;
+        login(username, password);
     }
 }
