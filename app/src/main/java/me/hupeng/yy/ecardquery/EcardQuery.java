@@ -231,9 +231,13 @@ public class EcardQuery {
          * */
         public String balance;
 
+        @Override
+        public String toString() {
+            return no + " " + time + " " + type + " \n" + shop + " " + turnover + " " + balance;
+        }
     }
 
-    public void getAccountBiils(String username,String password, AccountBillListener accountBillListener){
+    public void queryAccountBiils(String username,String password, AccountBillListener accountBillListener){
         this.accountBillListener = accountBillListener;
         login(username, password);
     }
